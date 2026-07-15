@@ -1,0 +1,7 @@
+# 문서 파싱 검증 파이프라인 (WER + TEDS-content)
+python-docx>=1.1.2      # GT .docx 본문/표 추출
+python-pptx>=0.6.23     # GT .pptx 본문/표 추출
+openpyxl>=3.1.2         # GT .xlsx 시트(표) 추출
+beautifulsoup4>=4.12.3  # 표(HTML) 파싱
+pandas>=2.2.2           # 결과 집계 / CSV
+kiwipiepy>=0.18.0       # (선택) 형태소 단위 WER - WER_TOKENIZER="morpheme"일 때만 필요

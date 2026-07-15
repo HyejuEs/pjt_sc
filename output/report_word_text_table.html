@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>파싱 품질 비교 리포트</title>
+<style>
+body { font-family: -apple-system, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; margin: 24px; color: #1a1a1a; background:#fafafa; }
+h1 { font-size: 22px; }
+h2 { font-size: 18px; margin-top: 36px; border-bottom: 2px solid #333; padding-bottom: 6px; }
+h3 { font-size: 15px; margin-top: 24px; }
+h4 { font-size: 13px; color: #555; margin-bottom: 4px; }
+.summary { display:flex; gap:16px; flex-wrap:wrap; margin-bottom: 24px; }
+.summary .card { background:white; border:1px solid #ddd; border-radius:8px; padding:12px 18px; min-width:160px; }
+.summary .card .label { font-size:12px; color:#777; }
+.summary .card .value { font-size:20px; font-weight:bold; }
+.legend { font-size:12px; margin-bottom: 12px; }
+.legend span { padding: 1px 6px; border-radius: 3px; margin-right: 10px; }
+.d-sub { background:#fff3b0; }
+.d-del { background:#ffd0d0; text-decoration: line-through; }
+.d-ins { background:#c9f2c9; text-decoration: underline; }
+.d-empty { color:#aaa; font-style: italic; }
+table.para-table { border-collapse: collapse; width: 100%; background:white; table-layout: fixed; }
+table.para-table th, table.para-table td { border: 1px solid #ddd; padding: 8px 10px; vertical-align: top; font-size: 13px; line-height:1.6; word-break: break-word; }
+table.para-table th { background:#333; color:white; text-align:left; }
+table.para-table col { width: 33.3%; }
+.col-gt { background: #fbfbfb; }
+.table-section { background:white; border:1px solid #ddd; border-radius:8px; padding:16px; margin-top:16px; }
+.table-columns { display:flex; gap:16px; flex-wrap:wrap; }
+.table-block .table-label { font-weight:bold; font-size:12px; margin-bottom:4px; color:#555; }
+table.cell-table { border-collapse: collapse; }
+table.cell-table td { border:1px solid #ccc; padding:6px 10px; font-size:13px; }
+table.cell-diff-table { border-collapse: collapse; margin-top:6px; margin-bottom:16px; }
+table.cell-diff-table td { border:1px solid #ccc; padding:6px 10px; font-size:12px; vertical-align:top; position:relative; }
+.cell-match { background:#c9f2c9; }
+.cell-partial { background:#fff3b0; }
+.cell-mismatch { background:#ffd0d0; }
+.cell-missing { background:#ffd0d0; }
+.cell-extra { background:#d6e4ff; }
+.cell-tag { font-size:10px; color:#666; margin-top:4px; }
+.note { font-size:12px; color:#777; }
+.dup-wrap { display:flex; gap:16px; flex-wrap:wrap; }
+.dup-col { flex:1; min-width:260px; background:white; border:1px solid #ddd; border-radius:8px; padding:12px 16px; }
+.dup-list { margin:6px 0; padding-left:18px; }
+.dup-list li { font-size:12px; color:#555; margin:2px 0; }
+.slide-divider td { background:#eef2ff; color:#3730a3; font-weight:600; text-align:center;
+  font-size:12px; letter-spacing:1px; padding:6px; }
+.relax-note { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px;
+  padding:10px 14px; font-size:12px; color:#166534; margin:8px 0; }
+.relax-note ul { margin:6px 0 0; padding-left:18px; }
+.dup-line { background:#e0f2fe; border-left:3px solid #0284c7; padding:2px 6px; }
+.dup-badge { display:inline-block; font-size:10px; background:#0284c7; color:white;
+  border-radius:4px; padding:1px 5px; margin-left:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<h1>파싱 품질 비교 리포트</h1>
+
+<div class="summary">
+  <div class="card"><div class="label">WER (낮을수록 좋음) - Before</div><div class="value">0.1833</div></div>
+  <div class="card"><div class="label">WER (낮을수록 좋음) - After</div><div class="value">0.0000</div></div>
+  <div class="card"><div class="label">TEDS-content (높을수록 좋음) - Before</div><div class="value">0.8846</div></div>
+  <div class="card"><div class="label">TEDS-content (높을수록 좋음) - After</div><div class="value">1.0000</div></div>
+</div>
+
+<h2>1. 본문 텍스트 비교 (문단 전체, 생략 없음)</h2>
+<div class="legend">
+  <span class="d-sub">치환(문구가 바뀜)</span>
+  <span class="d-del">누락(GT엔 있는데 사라짐)</span>
+  <span class="d-ins">삽입(파서가 새로 만든 잡음)</span>
+  &nbsp;·&nbsp; 하이라이트 안의 <code>·</code>=공백 <code>⬚</code>=전각공백 <code>→</code>=탭 <code>↵</code>=줄바꿈 (눈에 안 보이던 문자를 드러낸 것)
+</div>
+<h3>Before: 가이드라인 적용 전 원본(before_gt) ↔ 파서 결과(before.txt)</h3>
+    <table class="para-table">
+      <thead><tr><th>GT (before_gt)</th><th>Before (파서)</th></tr></thead>
+      <tbody><tr><td class="col-gt">신상품 광고물 사전심의는 마케팅팀 담당자가 접수 후 3영업일 이내 처리한다.</td><td class="col-before">신상품 광고물 사전심의는 마케팅팀 담당자가 접수 후 3영업일 이내 처리한다.</td></tr><tr class="slide-divider"><td colspan="2">━━ 세부절차 ━━</td></tr><tr><td class="col-gt">## 세부절차</td><td class="col-before">## 세부절차</td></tr><tr><td class="col-gt">① 접수 ② 검토 ③ 승인</td><td class="col-before">① 접수 ② 검토 ③ 승인</td></tr><tr class="slide-divider"><td colspan="2">━━ 세부절차 ━━</td></tr><tr><td class="col-gt">## 세부절차</td><td class="col-before">## 세부절차</td></tr><tr><td class="col-gt">① 현장점검 ② 결과보고 ③ 시정조치</td><td class="col-before">① 현장점검 ② 결과보고 ③ 시정조치</td></tr><tr><td class="col-gt"><span class="d-sub">PF★</span> 대출은 승인 대상에서 <span class="d-sub">제외되며(★=고위험군),</span> <span class="d-sub">준법감시인(CCO)이</span> 최종 확인한다.</td><td class="col-before"><span class="d-sub">PF*</span> 대출은 승인 대상에서 <span class="d-sub">제외되며,</span> <span class="d-sub">준법감시인이</span> 최종 확인한다.</td></tr><tr><td class="col-gt">동 규정은 <span class="d-sub">甲(발행사)과</span> <span class="d-sub">乙(대행사)</span> 간 계약에 적용된다.</td><td class="col-before">동 규정은 <span class="d-sub">발행사와</span> <span class="d-sub">대행사</span> 간 계약에 적용된다.</td></tr><tr><td class="col-gt">적합성 원칙 준수 여부: O   설명의무 이행 여부: X</td><td class="col-before">적합성 원칙 준수 여부: O   설명의무 이행 여부: X</td></tr><tr><td class="col-gt">반드시 준수해야 하는 핵심 조항</td><td class="col-before">반드시 준수해야 하는 핵심 조항</td></tr><tr><td class="col-gt"><span class="d-sub">#</span> <span class="d-sub">월별</span> <span class="d-sub">대출·실적·비교</span></td><td class="col-before"><span class="d-sub">저축은행</span> <span class="d-sub">429</span> <span class="d-sub">322</span></td></tr><tr><td class="col-gt"><span class="d-empty">(해당 없음)</span></td><td class="col-before"><span class="d-ins">인터넷은행 3329 2605</span></td></tr></tbody>
+    </table><h3>After: 가이드라인 적용 후 원본(after_gt) ↔ 파서 결과(after.txt)</h3>
+    <table class="para-table">
+      <thead><tr><th>GT (after_gt)</th><th>After (파서)</th></tr></thead>
+      <tbody><tr><td class="col-gt"># 신상품 광고물 사전심의 절차</td><td class="col-before"># 신상품 광고물 사전심의 절차</td></tr><tr><td class="col-gt">신상품 광고물 사전심의는 마케팅팀 담당자가 접수 후 3영업일 이내 처리한다.</td><td class="col-before">신상품 광고물 사전심의는 마케팅팀 담당자가 접수 후 3영업일 이내 처리한다.</td></tr><tr class="slide-divider"><td colspan="2">━━ 일반 심의 세부절차 ━━</td></tr><tr><td class="col-gt">## 일반 심의 세부절차</td><td class="col-before">## 일반 심의 세부절차</td></tr><tr><td class="col-gt">① 접수 ② 검토 ③ 승인</td><td class="col-before">① 접수 ② 검토 ③ 승인</td></tr><tr class="slide-divider"><td colspan="2">━━ 특별점검 세부절차 ━━</td></tr><tr><td class="col-gt">## 특별점검 세부절차</td><td class="col-before">## 특별점검 세부절차</td></tr><tr><td class="col-gt">① 현장점검 ② 결과보고 ③ 시정조치</td><td class="col-before">① 현장점검 ② 결과보고 ③ 시정조치</td></tr><tr><td class="col-gt">PF(프로젝트 파이낸싱)★ 대출은 승인 대상에서 제외되며(★: 고위험군을 의미), 준법감시인(CCO, Chief Compliance Officer)이 최종 확인한다.</td><td class="col-before">PF(프로젝트 파이낸싱)★ 대출은 승인 대상에서 제외되며(★: 고위험군을 의미), 준법감시인(CCO, Chief Compliance Officer)이 최종 확인한다.</td></tr><tr><td class="col-gt">동 규정은 갑(甲, 발행사)과 을(乙, 대행사) 간 계약에 적용된다.</td><td class="col-before">동 규정은 갑(甲, 발행사)과 을(乙, 대행사) 간 계약에 적용된다.</td></tr><tr><td class="col-gt">적합성 원칙 준수 여부: O(준수)   설명의무 이행 여부: X(미이행)</td><td class="col-before">적합성 원칙 준수 여부: O(준수)   설명의무 이행 여부: X(미이행)</td></tr><tr><td class="col-gt">**반드시 준수해야 하는 핵심 조항**</td><td class="col-before">**반드시 준수해야 하는 핵심 조항**</td></tr><tr><td class="col-gt"># 월별 대출 실적 비교</td><td class="col-before"># 월별 대출 실적 비교</td></tr></tbody>
+    </table>
+
+<h2>2. 표 비교 (등장 순서대로, 전체)</h2>
+
+        <div class="table-section">
+          <h3>표 1</h3>
+          <div class="table-columns">
+            <div class="table-block gt"><div class="table-label">GT (원본)</div><table class="cell-table"><tr><td>구분</td><td>2025년 상반기 1월(억원)</td><td>2025년 상반기 2월(억원)</td><td>비고</td></tr><tr><td>저축은행</td><td>429</td><td>322</td><td>전월대비 감소</td></tr><tr><td>인터넷은행</td><td>3329</td><td>2605</td><td>전월대비 감소</td></tr></table></div>
+          </div>
+          <h4>Before vs GT (셀 단위 비교)</h4>
+          <table class="cell-diff-table"><tr><td class="cell-match">GT: 구분<br>Before: 구분<div class="cell-tag">유사도 1.00</div></td><td class="cell-partial">GT: 2025년 상반기 1월(억원)<br>Before: 2025 상반기<div class="cell-tag">유사도 0.67</div></td><td class="cell-partial">GT: 2025년 상반기 2월(억원)<br>Before: 2025 상반기<div class="cell-tag">유사도 0.67</div></td><td class="cell-match">GT: 비고<br>Before: 비고<div class="cell-tag">유사도 1.00</div></td></tr><tr><td class="cell-mismatch">GT: 저축은행<br>Before: 구분<div class="cell-tag">유사도 0.00</div></td><td class="cell-mismatch">GT: 429<br>Before: 1월<div class="cell-tag">유사도 0.00</div></td><td class="cell-mismatch">GT: 322<br>Before: 2월<div class="cell-tag">유사도 0.40</div></td><td class="cell-mismatch">GT: 전월대비 감소<br>Before: <div class="cell-tag">유사도 0.00</div></td></tr><tr><td class="cell-mismatch">GT: 인터넷은행<br>Before: 저축은행<div class="cell-tag">유사도 0.44</div></td><td class="cell-mismatch">GT: 3329<br>Before: 429<div class="cell-tag">유사도 0.57</div></td><td class="cell-mismatch">GT: 2605<br>Before: 322<div class="cell-tag">유사도 0.29</div></td><td class="cell-match">GT: 전월대비 감소<br>Before: 전월대비 감소<div class="cell-tag">유사도 1.00</div></td></tr><tr><td class="cell-extra">인터넷은행<div class="cell-tag">Before에만 존재</div></td><td class="cell-extra">3329<div class="cell-tag">Before에만 존재</div></td><td class="cell-extra">2605<div class="cell-tag">Before에만 존재</div></td><td class="cell-extra">전월대비 감소<div class="cell-tag">Before에만 존재</div></td></tr><tr><td class="cell-extra">[표] 저축은행/인터넷은행 월별 대출 실적(단위: 억원)<div class="cell-tag">Before에만 존재</div></td><td class="cell-extra"><div class="cell-tag">Before에만 존재</div></td><td class="cell-extra"><div class="cell-tag">Before에만 존재</div></td><td class="cell-extra"><div class="cell-tag">Before에만 존재</div></td></tr></table>
+          <h4>After vs GT (셀 단위 비교)</h4>
+          <table class="cell-diff-table"><tr><td class="cell-match">GT: 구분<br>After: 구분<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 2025년 상반기 1월(억원)<br>After: 2025년 상반기 1월(억원)<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 2025년 상반기 2월(억원)<br>After: 2025년 상반기 2월(억원)<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 비고<br>After: 비고<div class="cell-tag">유사도 1.00</div></td></tr><tr><td class="cell-match">GT: 저축은행<br>After: 저축은행<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 429<br>After: 429<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 322<br>After: 322<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 전월대비 감소<br>After: 전월대비 감소<div class="cell-tag">유사도 1.00</div></td></tr><tr><td class="cell-match">GT: 인터넷은행<br>After: 인터넷은행<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 3329<br>After: 3329<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 2605<br>After: 2605<div class="cell-tag">유사도 1.00</div></td><td class="cell-match">GT: 전월대비 감소<br>After: 전월대비 감소<div class="cell-tag">유사도 1.00</div></td></tr></table>
+        </div>
+
+
+
+
+<h2>4. 줄바꿈 유연화 (WER 계산 시 GT 경계에 맞춘 내역)</h2>
+<p class="note">파서 줄바꿈이 GT와 다를 때, 바로 인접한 줄만 확인해 GT 한 줄과 같아지면
+합치거나 나눴습니다(±1줄만, 밀림 방지). 아래는 그렇게 조정된 줄들입니다.</p>
+<div class="dup-wrap">
+  <div class="dup-col"><h3>Before (0건)</h3><div class="relax-note"><p>(없음)</p></div></div>
+  <div class="dup-col"><h3>After (1건)</h3><div class="relax-note"><ul><li>두 줄 합침: 신상품 광고물 사전심의는 마케팅팀 담당자가 / 접수 후 3영업일 이내 처리한다. → 신상품 광고물 사전심의는 마케팅팀 담당자가 접수 후 3영업일 이내 처리한다.</li></ul></div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+﻿doc_id,type,dual_gt,wer_before,teds_before,wer_after,teds_after
+ppt_slides,pptx,True,0.29411764705882354,,0.03225806451612903,1.0
+ppt_table_dup,pptx,True,1.0,1.0,1.0,1.0
+word_box_memo_strike,docx,True,0.62,,0.02857142857142857,1.0
+word_text_table,docx,True,0.18333333333333332,0.8846153846153846,0.0,1.0
+xlsx_multisheet_linked,xlsx,True,0.0,1.0,0.0,0.9971522582739439
+xlsx_single,xlsx,True,0.0,0.6190476190476191,0.0,1.0

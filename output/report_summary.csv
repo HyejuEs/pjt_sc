@@ -1,0 +1,3 @@
+﻿metric,before_mean,after_mean,absolute_change,improvement_pct,direction
+wer,0.3496,0.1768,-0.1728,49.42,감소(개선)
+teds_content,0.8759,0.9995,0.1236,14.11,증가(개선)
